@@ -14,8 +14,8 @@ const Router = ({ routes, path, children }: { routes: RouterRoute[], path?: F<Ro
 
   const router = useRouter ( routes );
   const location = $<RouterPath> ( castPath ( $$(path) || globalThis.location?.pathname || '/' ) );
-  const lookup = useMemo ( () => router.route ( 'GET', $$(location) ) || router.route ( 'GET', '/404' ) || FALLBACK_ROUTE );
-  const route = useMemo ( () => lookup ().route.handlers[0] );
+  const lookup = useMemo ( () => router.route ( $$(location) ) || router.route ( '/404' ) || FALLBACK_ROUTE );
+  const route = useMemo ( () => lookup ().route );
   const params = useMemo ( () => lookup ().params );
 
   const navigate = ( path: RouterPath ): void => { // Update location manually

@@ -17,7 +17,8 @@ npm install --save voby-simple-router
 | [`Router`](#router)       | [`useLocation`](#uselocation) | [`RouterParams`](#routerparams) |
 | [`Route`](#route)         | [`useNavigate`](#usenavigate) | [`RouterPath`](#routerpath)     |
 | [`Link`](#link)           | [`useParams`](#useparams)     | [`RouterRoute`](#routerroute)   |
-| [`Navigate`](#navigate)   | [`useRoute`](#useroute)       |                                 |
+| [`Navigate`](#navigate)   | [`useRoute`](#useroute)       | [`RouterRouter`](#routerrouter)                                |
+|                           | [`useRouter`](#userouter)     |                                 |
 
 ## Usage
 
@@ -71,7 +72,7 @@ const Routes = {
 // The path to render is not provided, so it's inferred, this is useful when running in the client
 
 const app = (
-  <Router routes={routes}>
+  <Router routes={Routes}>
     <Layout />
   </Router>
 );
@@ -80,7 +81,7 @@ const app = (
 // The path is provided explicitly, this is mostly useful when doing SSR
 
 const app = (
-  <Router routes={routes} path="/user/John">
+  <Router routes={Routes} path="/user/John">
     <Layout />
   </Router>
 );
@@ -210,6 +211,31 @@ const App = () => {
   const someData = () => route ().someData;
   return <p>Some custom data: {someData}</p>;
 };
+```
+
+#### `useRouter`
+
+This low-level hook gives you the raw router, given a list of routes. You might never have to use this directly.
+
+```tsx
+import {useRouter} from 'voby-simple-router';
+
+const Routes = {
+  {
+    path: '/',
+    to: Home
+  }
+  // ...
+};
+
+// Creating the low-level router
+
+const router = useRouter ( Routes );
+
+// Trying to find a route given a path
+
+router.route ( '/' ); // => { params: {}, route: { path: '/', to: Home } }
+router.route ( '/missing' ); // => undefined
 ```
 
 ### Types

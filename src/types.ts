@@ -25,6 +25,10 @@ type RouterRoute = {
   children?: RouterRoute[]
 };
 
+type RouterRouter = {
+  route ( path: RouterPath ): { params: RouterParams, route: RouterRoute } | undefined
+};
+
 type RouterState = {
   location: O<RouterPath>,
   navigate: RouterNavigate,
@@ -35,4 +39,4 @@ type RouterState = {
 /* EXPORT */
 
 export type {F, O, OR};
-export type {RouterNavigate, RouterParams, RouterPath, RouterRoute, RouterState};
+export type {RouterNavigate, RouterParams, RouterPath, RouterRoute, RouterRouter, RouterState};
