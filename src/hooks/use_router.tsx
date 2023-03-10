@@ -28,7 +28,7 @@ const useRouter = ( routes: RouterRoute[] ): RouterRouter => {
 
   /* METHODS */
 
-  const route = ( path: RouterPath ): { params: RouterParams, route: RouterRoute } | undefined => {
+  const route = ( path: string ): { params: RouterParams, route: RouterRoute } | undefined => {
 
     const match = noren.route ( 'GET', path );
 

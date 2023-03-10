@@ -26,7 +26,7 @@ type RouterRoute = {
 };
 
 type RouterRouter = {
-  route ( path: RouterPath ): { params: RouterParams, route: RouterRoute } | undefined
+  route ( path: string ): { params: RouterParams, route: RouterRoute } | undefined
 };
 
 type RouterState = {

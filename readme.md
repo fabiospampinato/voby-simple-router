@@ -276,7 +276,7 @@ The type of the low-level router, the one you get with `useRouter`.
 
 ```ts
 type RouterRouter = {
-  route ( path: RouterPath ): { params: RouterParams, route: RouterRoute } | undefined
+  route ( path: string ): { params: RouterParams, route: RouterRoute } | undefined
 };
 ```
 
