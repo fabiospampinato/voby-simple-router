@@ -2,7 +2,7 @@
 /* IMPORT */
 
 import Noren from 'noren/router';
-import type {RouterParams, RouterPath, RouterRoute, RouterRouter} from '~/types';
+import type {RouterParams, RouterRoute, RouterRouter} from '~/types';
 
 /* MAIN */
 
