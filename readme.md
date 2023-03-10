@@ -17,7 +17,7 @@ npm install --save voby-simple-router
 | [`Router`](#router)       | [`useLocation`](#uselocation) | [`RouterParams`](#routerparams) |
 | [`Route`](#route)         | [`useNavigate`](#usenavigate) | [`RouterPath`](#routerpath)     |
 | [`Link`](#link)           | [`useParams`](#useparams)     | [`RouterRoute`](#routerroute)   |
-| [`Navigate`](#navigate)   | [`useRoute`](#useroute)       | [`RouterRouter`](#routerrouter)                                |
+| [`Navigate`](#navigate)   | [`useRoute`](#useroute)       | [`RouterRouter`](#routerrouter) |
 |                           | [`useRouter`](#userouter)     |                                 |
 
 ## Usage
@@ -267,6 +267,16 @@ type RouterRoute = {
   path: string,
   to: JSX.Child,
   children?: RouterRoute[]
+};
+```
+
+#### `RouterRouter`
+
+The type of the low-level router, the one you get with `useRouter`.
+
+```ts
+type RouterRouter = {
+  route ( path: RouterPath ): { params: RouterParams, route: RouterRoute } | undefined
 };
 ```
 
