@@ -2,7 +2,7 @@
   "name": "voby-simple-router",
   "repository": "github:fabiospampinato/voby-simple-router",
   "description": "A simple isomorphic router for Voby.",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "type": "module",
   "main": "dist/index.js",
   "exports": "./dist/index.js",
