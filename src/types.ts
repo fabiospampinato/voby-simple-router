@@ -31,8 +31,12 @@ type RouterRouter = {
 
 type RouterState = {
   location: O<RouterPath>,
+  pathname: OR<RouterPath>,
+  search: OR<string>,
+  hash: OR<string>,
   navigate: RouterNavigate,
   params: OR<RouterParams>,
+  searchParams: OR<URLSearchParams>,
   route: OR<RouterRoute>
 };
 

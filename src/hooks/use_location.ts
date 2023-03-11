@@ -1,7 +1,6 @@
 
 /* IMPORT */
 
-import {useReadonly} from 'voby';
 import useState from '~/hooks/use_state';
 import type {OR, RouterPath} from '~/types';
 
@@ -9,7 +8,7 @@ import type {OR, RouterPath} from '~/types';
 
 const useLocation = (): OR<RouterPath> => {
 
-  return useReadonly ( useState ().location );
+  return useState ().location;
 
 };
 

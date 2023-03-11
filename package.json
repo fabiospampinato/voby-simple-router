@@ -22,7 +22,7 @@
     "isomorphic"
   ],
   "dependencies": {
-    "noren": "^0.2.0"
+    "noren": "^0.4.2"
   },
   "peerDependencies": {
     "voby": "*"

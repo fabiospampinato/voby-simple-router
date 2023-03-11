@@ -12,13 +12,15 @@ npm install --save voby-simple-router
 
 ## APIs
 
-| [Components](#components) | [Hooks](#hooks)               | [Types](#types)                 |
-| ------------------------- | ----------------------------- | ------------------------------- |
-| [`Router`](#router)       | [`useLocation`](#uselocation) | [`RouterParams`](#routerparams) |
-| [`Route`](#route)         | [`useNavigate`](#usenavigate) | [`RouterPath`](#routerpath)     |
-| [`Link`](#link)           | [`useParams`](#useparams)     | [`RouterRoute`](#routerroute)   |
-| [`Navigate`](#navigate)   | [`useRoute`](#useroute)       | [`RouterRouter`](#routerrouter) |
-|                           | [`useRouter`](#userouter)     |                                 |
+| [Components](#components) | [Hooks](#hooks)                       | [Types](#types)                 |
+| ------------------------- | ------------------------------------- | ------------------------------- |
+| [`Router`](#router)       | [`useHash`](#usehash)                 | [`RouterParams`](#routerparams) |
+| [`Route`](#route)         | [`useLocation`](#uselocation)         | [`RouterPath`](#routerpath)     |
+| [`Link`](#link)           | [`useNavigate`](#usenavigate)         | [`RouterRoute`](#routerroute)   |
+| [`Navigate`](#navigate)   | [`useParams`](#useparams)             | [`RouterRouter`](#routerrouter) |
+|                           | [`useRoute`](#useroute)               |                                 |
+|                           | [`useRouter`](#userouter)             |                                 |
+|                           | [`useSearchParams`](#usesearchparams) |                                 |
 
 ## Usage
 
@@ -146,6 +148,21 @@ const Routes = {
 
 The following hooks allow you to extract some information from the router.
 
+#### `useHash`
+
+This hook tells you the value of the current hash fragment.
+
+```tsx
+import {useHash} from 'voby-simple-router';
+
+// Let's get the current hash fragment
+
+const App = () => {
+  const hash = useHash ();
+  return <p>Hash: {hash}</p>;
+};
+```
+
 #### `useLocation`
 
 This hook tells you the pathname the router is currently at.
@@ -210,6 +227,25 @@ const App = () => {
   const route = useRoute ();
   const someData = () => route ().someData;
   return <p>Some custom data: {someData}</p>;
+};
+```
+
+#### `useSearchParams`
+
+This hook allows you to read and write search parameters, which are those encoded in the URL after `?`.
+
+Currently the `URLSearchParams` you receive won't react to changes in search parameters unless the entire location changes.
+
+```tsx
+import {useSearchParams} from 'voby-simple-router';
+
+// Let's manipulate search parameters
+
+const App = () => {
+  const searchParams = useSearchParams ();
+  const value = () => Number ( searchParams ().get ( 'value' ) ) || 0;
+  const increment = () => searchparams ().set ( 'value', value () + 1 );
+  return <p onClick={increment}>Current value: {value}</p>;
 };
 ```
 

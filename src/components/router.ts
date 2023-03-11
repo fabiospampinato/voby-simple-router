@@ -12,11 +12,21 @@ import type {F, RouterPath, RouterRoute} from '~/types';
 
 const Router = ({ routes, path, children }: { routes: RouterRoute[], path?: F<RouterPath>, children: JSX.Children }): JSX.Element => {
 
+  const url = globalThis.location;
+  const getPropsPath = () => $$(path);
+  const getUrlPath = () => ( url ? `${url.pathname}${url.search}${url.hash}` : '/' );
+  const getPath = () => getPropsPath () || getUrlPath ();
+
+  const location = $ ( castPath ( getPath () ) );
+  const pathname = useMemo ( () => castPath ( location ().replace ( /[?#].*$/, '' ) ) );
+  const search = useMemo ( () => location ().replace ( /^.*?(?:\?|$)/, '' ).replace ( /#.*$/, '' ) );
+  const hash = useMemo ( () => location ().replace ( /^.*?(?:#|$)/, '' ) );
+
   const router = useRouter ( routes );
-  const location = $<RouterPath> ( castPath ( $$(path) || globalThis.location?.pathname || '/' ) );
-  const lookup = useMemo ( () => router.route ( $$(location) ) || router.route ( '/404' ) || FALLBACK_ROUTE );
+  const lookup = useMemo ( () => router.route ( pathname () ) || router.route ( '/404' ) || FALLBACK_ROUTE );
   const route = useMemo ( () => lookup ().route );
   const params = useMemo ( () => lookup ().params );
+  const searchParams = useMemo ( () => new URLSearchParams ( search () ) ); //TODO: Maybe update the URL too? Maybe push an entry into the history? Maybe react to individual changes?
 
   const navigate = ( path: RouterPath ): void => { // Update location manually
 
@@ -31,17 +41,17 @@ const Router = ({ routes, path, children }: { routes: RouterRoute[], path?: F<Ro
 
   useEffect ( () => { // Update location from props
 
-    navigate ( castPath ( $$(path) || globalThis.location?.pathname || '/' ) );
+    navigate ( castPath ( getPath () ) );
 
   });
 
   useEventListener ( globalThis.window, 'popstate', () => { // Update location from history
 
-    location ( castPath ( globalThis.location?.pathname || '/' ) );
+    location ( castPath ( getUrlPath () ) );
 
   });
 
-  return h ( State.Provider, { value: { location, navigate, params, route }, children } );
+  return h ( State.Provider, { value: { location, pathname, search, hash, navigate, params, searchParams, route }, children } );
 
 };
 
