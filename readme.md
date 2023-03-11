@@ -12,15 +12,16 @@ npm install --save voby-simple-router
 
 ## APIs
 
-| [Components](#components) | [Hooks](#hooks)                       | [Types](#types)                 |
-| ------------------------- | ------------------------------------- | ------------------------------- |
-| [`Router`](#router)       | [`useHash`](#usehash)                 | [`RouterParams`](#routerparams) |
-| [`Route`](#route)         | [`useLocation`](#uselocation)         | [`RouterPath`](#routerpath)     |
-| [`Link`](#link)           | [`useNavigate`](#usenavigate)         | [`RouterRoute`](#routerroute)   |
-| [`Navigate`](#navigate)   | [`useParams`](#useparams)             | [`RouterRouter`](#routerrouter) |
-|                           | [`useRoute`](#useroute)               |                                 |
-|                           | [`useRouter`](#userouter)             |                                 |
-|                           | [`useSearchParams`](#usesearchparams) |                                 |
+| [Components](#components) | [Hooks](#hooks)                       | [Types](#types)                               |
+| ------------------------- | ------------------------------------- | --------------------------------------------- |
+| [`Router`](#router)       | [`useHash`](#usehash)                 | [`RouterLoader`](#routerloader)               |
+| [`Route`](#route)         | [`useLoader`](#useloader)             | [`RouterLoaderContext`](#routerloadercontext) |
+| [`Link`](#link)           | [`useLocation`](#uselocation)         | [`RouterParams`](#routerparams)               |
+| [`Navigate`](#navigate)   | [`useNavigate`](#usenavigate)         | [`RouterPath`](#routerpath)                   |
+|                           | [`useParams`](#useparams)             | [`RouterRoute`](#routerroute)                 |
+|                           | [`useRoute`](#useroute)               | [`RouterRouter`](#routerrouter)               |
+|                           | [`useRouter`](#userouter)             |                                               |
+|                           | [`useSearchParams`](#usesearchparams) |                                               |
 
 ## Usage
 
@@ -40,6 +41,8 @@ import Home from './pages/home';
 import NotFound from './pages/not_found';
 import UserAdmin from './pages/user_admin';
 import UserProfile from './pages/user_profile';
+import someLoader from './loaders/some';
+import {lazy} from 'voby';
 import {Navigate, Router} from 'voby-simple-router';
 
 // First of all let's define some routes
@@ -63,6 +66,17 @@ const Routes = {
         to: UserProfile
       }
     ]
+  },
+  { // A route can also be lazy, for bundle-splitting purposes
+    path: '/some',
+    to: lazy ( () => import ( './pages/some' ) ),
+    // A loader can be specified for each route, which returns some data
+    // A loader allows for loading in parallel both the route and its data
+    // The data will be accessible using the "useLoader" hook
+    // Router hooks can't be called inside a loader, so a context object with some data is provided
+    loader: ({ params }) => {
+      return someLoader ();
+    }
   },
   { // A route with a special path, which is matched when no other route matches
     path: '/404',
@@ -160,6 +174,38 @@ import {useHash} from 'voby-simple-router';
 const App = () => {
   const hash = useHash ();
   return <p>Hash: {hash}</p>;
+};
+```
+
+#### `useLoader`
+
+This hook gives you a [`resource`](https://github.com/vobyjs/voby/#resource) to the resolved return value of the loader for the current route.
+
+This hook is not type-safe, you should provide a type for the value as a generic type argument, but it won't be guaranteed to be correct.
+
+```tsx
+import someLoader, {SomeValue} from './loaders/some';
+import {lazy, Suspense} from 'voby';
+import {useLoader} from 'voby-simple-router';
+
+const Routes = [
+  {
+    path: '/some',
+    to: lazy ( () => import ( './pages/some' ) ),
+    loader: someLoader
+  }
+];
+
+// Let's get the data from the loader
+
+const App = () => {
+  const loader = useLoader<SomeValue> ();
+  const value = () => loader ().value;
+  return (
+    <Suspense fallback={<div>Still loading...</div>}>
+      <p>Value: {value}</p>
+    </Suspsense>
+  );
 };
 ```
 
@@ -278,6 +324,28 @@ router.route ( '/missing' ); // => undefined
 
 The following types are provided.
 
+#### `RouterLoader`
+
+The type of a route's loader. The loader is called with a context object, since you can't call router hooks inside it.
+
+```ts
+type RouterLoader<T> = ( ctx: RouterLoaderContext ) => Promise<T>;
+```
+
+#### `RouterLoaderContext`
+
+The context object passed as argument to each loader.
+
+```ts
+type RouterLoaderContext = {
+  location: RouterPath,
+  hash: string,
+  params: RouterParams,
+  searchParams: URLSearchParams,
+  route: RouterRoute,
+};
+```
+
 #### `RouterParams`
 
 The type of the value that the read-only observable that `useParams` gives you contains.
@@ -302,6 +370,7 @@ The type of a route that you can pass to the router.
 type RouterRoute = {
   path: string,
   to: JSX.Child,
+  loader?: RouterLoader<unknown>,
   children?: RouterRoute[]
 };
 ```

@@ -1,8 +1,8 @@
 
 /* IMPORT */
 
-import {$, $$, h, useEventListener, useEffect, useMemo} from 'voby';
-import {FALLBACK_ROUTE} from '~/constants';
+import {$, $$, h, untrack, useEventListener, useEffect, useMemo, useResource} from 'voby';
+import {FALLBACK_ROUTE, NOOP} from '~/constants';
 import State from '~/contexts/state';
 import useRouter from '~/hooks/use_router';
 import {castPath} from '~/utils';
@@ -28,6 +28,9 @@ const Router = ({ routes, path, children }: { routes: RouterRoute[], path?: F<Ro
   const params = useMemo ( () => lookup ().params );
   const searchParams = useMemo ( () => new URLSearchParams ( search () ) ); //TODO: Maybe update the URL too? Maybe push an entry into the history? Maybe react to individual changes?
 
+  const loaderContext = () => ({ location: location (), hash: hash (), params: params (), searchParams: searchParams (), route: route () });
+  const loader = useMemo ( () => useResource ( () => ( route ().loader || NOOP )( untrack ( loaderContext ) ) ) );
+
   const navigate = ( path: RouterPath ): void => { // Update location manually
 
     if ( location () === path ) return; // Already there
@@ -51,7 +54,7 @@ const Router = ({ routes, path, children }: { routes: RouterRoute[], path?: F<Ro
 
   });
 
-  return h ( State.Provider, { value: { location, pathname, search, hash, navigate, params, searchParams, route }, children } );
+  return h ( State.Provider, { value: { location, pathname, search, hash, navigate, params, searchParams, route, loader }, children } );
 
 };
 
