@@ -7,9 +7,7 @@ import type {F, RouterPath} from '~/types';
 
 /* MAIN */
 
-//TODO: Add rest props for the anchor element also
-
-const Link = ({ to, title, children }: { to: F<RouterPath>, title?: F<string>, children?: JSX.Children }): JSX.Element => {
+const Link = ({ to, title, children, ...rest }: { to: F<RouterPath>, title?: F<string>, children?: JSX.Children } & Omit<JSX.IntrinsicElement<'a'>, 'children' | 'href' | 'title' | 'onClick'>): JSX.Element => {
 
   const navigate = useNavigate ();
 
@@ -21,7 +19,7 @@ const Link = ({ to, title, children }: { to: F<RouterPath>, title?: F<string>, c
 
   };
 
-  return h ( 'a', { href: to, title, onClick }, children );
+  return h ( 'a', { href: to, title, onClick, ...rest }, children );
 
 };
 
