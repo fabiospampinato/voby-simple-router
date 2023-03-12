@@ -43,6 +43,22 @@ const browser = ( browserPath: F<RouterPath>, routerPath?: F<RouterPath>, option
 
   };
 
+  const scrollTo = ( path: RouterPath ): void => { // Scroll to the fragment manually
+
+    if ( path !== getBrowserPath () ) return; // Already in a different path
+
+    const id = path.replace ( /^.*?#(.*)$/, '$1' );
+
+    if ( id === path ) return; // No hash found
+
+    const target = globalThis.document?.getElementById ( id );
+
+    if ( !target ) return;
+
+    target.scrollIntoView ();
+
+  };
+
   useEffect ( () => { // Update path from the browser
 
     path ( getBrowserPath () );
@@ -59,7 +75,13 @@ const browser = ( browserPath: F<RouterPath>, routerPath?: F<RouterPath>, option
 
     if ( options.historyHash ) {
 
-      useEventListener ( globalThis.document.body, 'click', ( event: MouseEvent ) => { // Handle clicks on a[href="#"] elements
+      setTimeout ( () => { //TODO: Wait for the page to be loaded better
+
+        scrollTo ( path () );
+
+      });
+
+      useEventListener ( globalThis.document, 'click', ( event: MouseEvent ) => { // Handle clicks on a[href="#"] elements
 
         const anchor = event.target;
 
@@ -70,7 +92,7 @@ const browser = ( browserPath: F<RouterPath>, routerPath?: F<RouterPath>, option
         if ( !href || !href.startsWith ( '#' ) ) return;
 
         const id = href.slice ( 1 );
-        const target = globalThis.document.getElementById ( id );
+        const target = globalThis.document?.getElementById ( id );
 
         if ( !target ) return;
 
@@ -96,17 +118,7 @@ const browser = ( browserPath: F<RouterPath>, routerPath?: F<RouterPath>, option
 
         setTimeout ( () => { //TODO: Wait for the page to be loaded better
 
-          if ( pathNext !== getBrowserPath () ) return; // Navigated away already
-
-          const id = pathNext.replace ( /^.*?#(.*)$/, '$1' );
-
-          if ( id === pathNext ) return; // No hash found
-
-          const target = globalThis.document.getElementById ( id );
-
-          if ( !target ) return;
-
-          target.scrollIntoView ();
+          scrollTo ( pathNext );
 
         });
 
