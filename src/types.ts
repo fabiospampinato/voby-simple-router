@@ -18,11 +18,18 @@ type RouterBackend = 'hash' | 'memory' | 'path';
 type RouterLoader<T> = ( ctx: RouterLoaderContext ) => Promise<T>;
 
 type RouterLoaderContext = {
-  location: RouterPath,
+  pathname: RouterPath,
+  search: string,
   hash: string,
   params: RouterParams,
   searchParams: URLSearchParams,
   route: RouterRoute
+};
+
+type RouterLocation = {
+  pathname: OR<RouterPath>,
+  search: OR<string>,
+  hash: OR<string>
 };
 
 type RouterNavigate = ( path: RouterPath ) => void;
@@ -43,7 +50,6 @@ type RouterRouter = {
 };
 
 type RouterState = {
-  location: OR<RouterPath>,
   pathname: OR<RouterPath>,
   search: OR<string>,
   hash: OR<string>,
@@ -57,4 +63,4 @@ type RouterState = {
 /* EXPORT */
 
 export type {F, O, OR, Resource};
-export type {RouterBackend, RouterLoader, RouterLoaderContext, RouterNavigate, RouterParams, RouterPath, RouterRoute, RouterRouter, RouterState};
+export type {RouterBackend, RouterLoader, RouterLoaderContext, RouterLocation, RouterNavigate, RouterParams, RouterPath, RouterRoute, RouterRouter, RouterState};

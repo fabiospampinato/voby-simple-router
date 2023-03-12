@@ -2,13 +2,15 @@
 /* IMPORT */
 
 import useState from '~/hooks/use_state';
-import type {OR, RouterPath} from '~/types';
+import type {RouterLocation} from '~/types';
 
 /* MAIN */
 
-const useLocation = (): OR<RouterPath> => {
+const useLocation = (): RouterLocation => {
 
-  return useState ().location;
+  const {pathname, search, hash} = useState ();
+
+  return {pathname, search, hash};
 
 };
 

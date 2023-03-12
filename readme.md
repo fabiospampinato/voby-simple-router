@@ -14,14 +14,13 @@ npm install --save voby-simple-router
 
 | [Components](#components) | [Hooks](#hooks)                       | [Types](#types)                               |
 | ------------------------- | ------------------------------------- | --------------------------------------------- |
-| [`Router`](#router)       | [`useHash`](#usehash)                 | [`RouterLoader`](#routerloader)               |
-| [`Route`](#route)         | [`useLoader`](#useloader)             | [`RouterLoaderContext`](#routerloadercontext) |
-| [`Link`](#link)           | [`useLocation`](#uselocation)         | [`RouterParams`](#routerparams)               |
-| [`Navigate`](#navigate)   | [`useNavigate`](#usenavigate)         | [`RouterPath`](#routerpath)                   |
-|                           | [`useParams`](#useparams)             | [`RouterRoute`](#routerroute)                 |
-|                           | [`useRoute`](#useroute)               | [`RouterRouter`](#routerrouter)               |
-|                           | [`useRouter`](#userouter)             |                                               |
-|                           | [`useSearchParams`](#usesearchparams) |                                               |
+| [`Router`](#router)       | [`useLoader`](#useloader)             | [`RouterLoader`](#routerloader)               |
+| [`Route`](#route)         | [`useLocation`](#uselocation)         | [`RouterLoaderContext`](#routerloadercontext) |
+| [`Link`](#link)           | [`useNavigate`](#usenavigate)         | [`RouterLocation`](#routerlocation)           |
+| [`Navigate`](#navigate)   | [`useParams`](#useparams)             | [`RouterParams`](#routerparams)               |
+|                           | [`useRoute`](#useroute)               | [`RouterPath`](#routerpath)                   |
+|                           | [`useRouter`](#userouter)             | [`RouterRoute`](#routerroute)                 |
+|                           | [`useSearchParams`](#usesearchparams) | [`RouterRouter`](#routerrouter)               |
 
 ## Usage
 
@@ -186,21 +185,6 @@ const Routes = {
 
 The following hooks allow you to extract some information from the router.
 
-#### `useHash`
-
-This hook tells you the value of the current hash fragment.
-
-```tsx
-import {useHash} from 'voby-simple-router';
-
-// Let's get the current hash fragment
-
-const App = () => {
-  const hash = useHash ();
-  return <p>Hash: {hash}</p>;
-};
-```
-
 #### `useLoader`
 
 This hook gives you a [`resource`](https://github.com/vobyjs/voby/#resource) to the resolved return value of the loader for the current route.
@@ -235,7 +219,7 @@ const App = () => {
 
 #### `useLocation`
 
-This hook tells you the pathname the router is currently at.
+This hook tells you the pathname, search, and hash parts of the url the router is currently at.
 
 ```tsx
 import {useLocation} from 'voby-simple-router';
@@ -243,8 +227,14 @@ import {useLocation} from 'voby-simple-router';
 // Let's get the current location of the router
 
 const App = () => {
-  const location = useLocation ();
-  return <p>Location: {location}</p>;
+  const {pathname, search, hash} = useLocation ();
+  return (
+    <>
+      <p>Pathname: {pathname}</p>
+      <p>Search: {search}</p>
+      <p>Hash: {hash}</p>
+    </>
+  );
 };
 ```
 
@@ -362,11 +352,24 @@ The context object passed as argument to each loader.
 
 ```ts
 type RouterLoaderContext = {
-  location: RouterPath,
+  pathname: RouterPath,
+  search: string,
   hash: string,
   params: RouterParams,
   searchParams: URLSearchParams,
-  route: RouterRoute,
+  route: RouterRoute
+};
+```
+
+#### `RouterLocation`
+
+The type of the location object that `useLocation` gives you.
+
+```ts
+type RouterLocation = {
+  pathname: ObservableReadonly<RouterPath>,
+  search: ObservableReadonly<string>,
+  hash: ObservableReadonly<string>
 };
 ```
 

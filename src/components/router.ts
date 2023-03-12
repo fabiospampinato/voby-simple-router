@@ -25,10 +25,10 @@ const Router = ({ backend, routes, path, children }: { backend?: RouterBackend, 
   const params = useMemo ( () => lookup ().params );
   const searchParams = useMemo ( () => new URLSearchParams ( search () ) ); //TODO: Maybe update the URL too? Maybe push an entry into the history? Maybe react to individual changes?
 
-  const loaderContext = () => ({ location: location (), hash: hash (), params: params (), searchParams: searchParams (), route: route () });
+  const loaderContext = () => ({ pathname: pathname (), search: search (), hash: hash (), params: params (), searchParams: searchParams (), route: route () });
   const loader = useMemo ( () => useResource ( () => ( route ().loader || NOOP )( untrack ( loaderContext ) ) ) );
 
-  return h ( State.Provider, { value: { location, pathname, search, hash, navigate, params, searchParams, route, loader }, children } );
+  return h ( State.Provider, { value: { pathname, search, hash, navigate, params, searchParams, route, loader }, children } );
 
 };
 
