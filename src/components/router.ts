@@ -1,23 +1,20 @@
 
 /* IMPORT */
 
-import {$, $$, h, untrack, useEventListener, useEffect, useMemo, useResource} from 'voby';
+import {h, untrack, useMemo, useResource} from 'voby';
+import getBackend from '~/backends/backend';
 import {FALLBACK_ROUTE, NOOP} from '~/constants';
 import State from '~/contexts/state';
 import useRouter from '~/hooks/use_router';
 import {castPath} from '~/utils';
-import type {F, RouterPath, RouterRoute} from '~/types';
+import type {F, RouterBackend, RouterPath, RouterRoute} from '~/types';
 
 /* MAIN */
 
-const Router = ({ routes, path, children }: { routes: RouterRoute[], path?: F<RouterPath>, children: JSX.Children }): JSX.Element => {
+const Router = ({ backend, routes, path, children }: { backend?: RouterBackend, routes: RouterRoute[], path?: F<RouterPath>, children: JSX.Children }): JSX.Element => {
 
-  const url = globalThis.location;
-  const getPropsPath = () => $$(path);
-  const getUrlPath = () => ( url ? `${url.pathname}${url.search}${url.hash}` : '/' );
-  const getPath = () => getPropsPath () || getUrlPath ();
+  const [location, navigate] = getBackend ( backend || 'path', path );
 
-  const location = $ ( castPath ( getPath () ) );
   const pathname = useMemo ( () => castPath ( location ().replace ( /[?#].*$/, '' ) ) );
   const search = useMemo ( () => location ().replace ( /^.*?(?:\?|$)/, '' ).replace ( /#.*$/, '' ) );
   const hash = useMemo ( () => location ().replace ( /^.*?(?:#|$)/, '' ) );
@@ -30,29 +27,6 @@ const Router = ({ routes, path, children }: { routes: RouterRoute[], path?: F<Ro
 
   const loaderContext = () => ({ location: location (), hash: hash (), params: params (), searchParams: searchParams (), route: route () });
   const loader = useMemo ( () => useResource ( () => ( route ().loader || NOOP )( untrack ( loaderContext ) ) ) );
-
-  const navigate = ( path: RouterPath ): void => { // Update location manually
-
-    if ( location () === path ) return; // Already there
-
-    globalThis.window?.scrollTo ( 0, 0 );
-    globalThis.history?.pushState ( null, '', path );
-
-    location ( path );
-
-  };
-
-  useEffect ( () => { // Update location from props
-
-    navigate ( castPath ( getPath () ) );
-
-  });
-
-  useEventListener ( globalThis.window, 'popstate', () => { // Update location from history
-
-    location ( castPath ( getUrlPath () ) );
-
-  });
 
   return h ( State.Provider, { value: { location, pathname, search, hash, navigate, params, searchParams, route, loader }, children } );
 

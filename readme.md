@@ -101,6 +101,30 @@ const app = (
     <Layout />
   </Router>
 );
+
+// Explicitly use the "path" backend, which is the default
+
+const app = (
+  <Router routes={Routes} backend="path" path="/user/John">
+    <Layout />
+  </Router>
+);
+
+// Explicitly use the "hash" backend, which stores the path in the hash part of the URL
+
+const app = (
+  <Router routes={Routes} backend="hash" path="/user/John">
+    <Layout />
+  </Router>
+);
+
+// Explicitly use the "memory" backend, which only stores the path in memory
+
+const app = (
+  <Router routes={Routes} backend="memory" path="/user/John">
+    <Layout />
+  </Router>
+);
 ```
 
 #### `Route`

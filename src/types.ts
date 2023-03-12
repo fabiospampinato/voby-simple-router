@@ -13,6 +13,8 @@ type OR<T> = ObservableReadonly<T>;
 
 /* MAIN */
 
+type RouterBackend = 'hash' | 'memory' | 'path';
+
 type RouterLoader<T> = ( ctx: RouterLoaderContext ) => Promise<T>;
 
 type RouterLoaderContext = {
@@ -55,4 +57,4 @@ type RouterState = {
 /* EXPORT */
 
 export type {F, O, OR, Resource};
-export type {RouterLoader, RouterLoaderContext, RouterNavigate, RouterParams, RouterPath, RouterRoute, RouterRouter, RouterState};
+export type {RouterBackend, RouterLoader, RouterLoaderContext, RouterNavigate, RouterParams, RouterPath, RouterRoute, RouterRouter, RouterState};
