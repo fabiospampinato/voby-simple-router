@@ -1,7 +1,7 @@
 
 /* IMPORT */
 
-import {$, $$, useEventListener, useEffect} from 'voby';
+import {$, $$, untrack, useEventListener, useEffect} from 'voby';
 import type {F, OR, RouterPath, RouterNavigate} from '~/types';
 
 /* TYPES */
@@ -18,8 +18,7 @@ const browser = ( browserPath: F<RouterPath>, routerPath?: F<RouterPath>, option
 
   const getBrowserPath = () => $$(browserPath);
   const getRouterPath = () => $$(routerPath);
-  const getPath = () => getRouterPath () || getBrowserPath ();
-  const path = $(getPath ());
+  const path = $<RouterPath>('/');
 
   const navigate = ( pathNext: RouterPath ): void => { // Update path manually
 
@@ -29,7 +28,7 @@ const browser = ( browserPath: F<RouterPath>, routerPath?: F<RouterPath>, option
 
       globalThis.window?.scrollTo ( 0, 0 );
 
-    };
+    }
 
     if ( options.history ) {
 
@@ -43,15 +42,21 @@ const browser = ( browserPath: F<RouterPath>, routerPath?: F<RouterPath>, option
 
   };
 
-  useEffect ( () => { // Update path from source
+  useEffect ( () => { // Update path from the browser
 
-    navigate ( getPath () );
+    path ( getBrowserPath () );
+
+  });
+
+  useEffect ( () => { // Update path from the router
+
+    navigate ( getRouterPath () || untrack ( path ) );
 
   });
 
   if ( options.history ) {
 
-    useEventListener ( globalThis.window, 'popstate', () => { // Update path from backend
+    useEventListener ( globalThis.window, 'popstate', () => { // Update path from history
 
       path ( getBrowserPath () );
 
