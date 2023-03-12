@@ -10,7 +10,7 @@ import type {F, OR, RouterPath, RouterNavigate} from '~/types';
 const hash = ( routerPath?: F<RouterPath> ): [OR<RouterPath>, RouterNavigate] => {
 
   const location = globalThis.location;
-  const browserPath = () => castPath ( location ? location.hash : '/' );
+  const browserPath = () => castPath ( location ? location.hash.replace ( /^#+/, '' ) : '/' );
 
   return browser ( browserPath, routerPath, { history: true, historyHash: true, resetScroll: true } );
 
