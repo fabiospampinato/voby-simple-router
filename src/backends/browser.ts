@@ -3,7 +3,7 @@
 
 import {$, $$, untrack, useEventListener, useEffect} from 'voby';
 import {castPath} from '~/utils';
-import type {F, OR, RouterPath, RouterNavigate} from '~/types';
+import type {F, OR, RouterPath, RouterNavigate, RouterNavigateOptions} from '~/types';
 
 /* TYPES */
 
@@ -21,7 +21,7 @@ const browser = ( browserPath: F<RouterPath>, routerPath?: F<RouterPath>, option
   const getRouterPath = () => $$(routerPath);
   const path = $<RouterPath>('/');
 
-  const navigate = ( pathNext: RouterPath ): void => { // Update path manually
+  const navigate = ( pathNext: RouterPath, navigateOptions: RouterNavigateOptions = {} ): void => { // Update path manually
 
     if ( path () === pathNext ) return; // Already there
 
@@ -34,8 +34,17 @@ const browser = ( browserPath: F<RouterPath>, routerPath?: F<RouterPath>, option
     if ( options.history ) {
 
       const url = options.historyHash ? `#${pathNext}` : pathNext;
+      const state = navigateOptions.state ?? '';
 
-      globalThis.history?.pushState ( null, '', url );
+      if ( navigateOptions.replace ) {
+
+        globalThis.history?.replaceState ( state, '', url );
+
+      } else {
+
+        globalThis.history?.pushState ( state, '', url );
+
+      }
 
     }
 
@@ -100,7 +109,7 @@ const browser = ( browserPath: F<RouterPath>, routerPath?: F<RouterPath>, option
 
         event.preventDefault ();
 
-        navigate ( pathNext );
+        navigate ( pathNext ); //TODO: Handle "replace" and "state" too
 
         target.scrollIntoView ();
 

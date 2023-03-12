@@ -7,7 +7,7 @@ import type {F, RouterPath} from '~/types';
 
 /* MAIN */
 
-const Link = ({ to, title, children, ...rest }: { to: F<RouterPath>, title?: F<string>, children?: JSX.Children } & Omit<JSX.IntrinsicElement<'a'>, 'children' | 'href' | 'title' | 'onClick'>): JSX.Element => {
+const Link = ({ to, replace, state, title, children, ...rest }: { to: F<RouterPath>, replace?: boolean, state?: any, title?: F<string>, children?: JSX.Children } & Omit<JSX.IntrinsicElement<'a'>, 'children' | 'href' | 'replace' | 'state' | 'title' | 'onClick'>): JSX.Element => {
 
   const navigate = useNavigate ();
 
@@ -15,7 +15,7 @@ const Link = ({ to, title, children, ...rest }: { to: F<RouterPath>, title?: F<s
 
     event.preventDefault ();
 
-    navigate ( $$(to) );
+    navigate ( $$(to), { replace, state } );
 
   };
 

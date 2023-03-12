@@ -7,13 +7,13 @@ import type {F, RouterPath} from '~/types';
 
 /* MAIN */
 
-const Navigate = ({ to }: { to: F<RouterPath> }): () => JSX.Element => {
+const Navigate = ({ to, state }: { to: F<RouterPath>, state?: any }): () => JSX.Element => {
 
   const navigate = useNavigate ();
 
   return (): undefined => {
 
-    queueMicrotask ( () => navigate ( $$(to) ) );
+    queueMicrotask ( () => navigate ( $$(to), { replace: true, state } ) );
 
     return;
 

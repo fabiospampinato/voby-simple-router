@@ -160,6 +160,8 @@ const Navbar = () => (
     <Link to="/">Homepage</Link>
     <Link to="/user">User</Link>
     <Link to="/about">About</Link>
+    <Link to="/foo" replace>Foo+Replace</Link>
+    <Link to="/foo" state={{ custom: 123 }}>Foo+State</Link>
   </ul>
 );
 ```
@@ -252,7 +254,12 @@ const A = ({ href, children }) => {
   const onClick = event => {
     event.preventDefault ();
     console.log ( `Navigating to: "${href}"` );
+    // Basic navigation, with history.pushState and no state value
     navigate ( href );
+    // Replace navigation, with history.replaceState, and no state value
+    navigate ( href, { replace: true } );
+    // Replace navigation, with history.replaceState, and an arbitrary state value
+    navigate ( href, { replace: true, state: {} } );
   };
   return <a href={href} onClick={onClick}>{children}</a>;
 };

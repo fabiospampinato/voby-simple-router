@@ -32,7 +32,12 @@ type RouterLocation = {
   hash: OR<string>
 };
 
-type RouterNavigate = ( path: RouterPath ) => void;
+type RouterNavigate = ( path: RouterPath, options?: RouterNavigateOptions ) => void;
+
+type RouterNavigateOptions = {
+  replace?: boolean,
+  state?: any
+};
 
 type RouterParams = Record<string, string | undefined>;
 
@@ -63,4 +68,4 @@ type RouterState = {
 /* EXPORT */
 
 export type {F, O, OR, Resource};
-export type {RouterBackend, RouterLoader, RouterLoaderContext, RouterLocation, RouterNavigate, RouterParams, RouterPath, RouterRoute, RouterRouter, RouterState};
+export type {RouterBackend, RouterLoader, RouterLoaderContext, RouterLocation, RouterNavigate, RouterNavigateOptions, RouterParams, RouterPath, RouterRoute, RouterRouter, RouterState};
