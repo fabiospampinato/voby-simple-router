@@ -33,7 +33,7 @@ The following components are some building blocks for your router-aware interfac
 
 #### `Router`
 
-The `Router` is the most important component, every other component and hook much be called inside a `Router` component to work.
+The `Router` is the most important component, every other component and hook must be called inside a `Router` component to work.
 
 ```tsx
 import Layout from './pages/_layout';
