@@ -17,10 +17,12 @@ const useRouter = ( routes: RouterRoute[] ): RouterRouter => {
   const populate = ( route: RouterRoute ): void => {
 
     stack.push ( route.path );
+
     noren.get ( stack.join ( '/' ), route );
-    stack.pop ();
 
     route.children?.forEach ( populate );
+
+    stack.pop ();
 
   };
 
