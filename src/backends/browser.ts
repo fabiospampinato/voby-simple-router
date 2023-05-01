@@ -72,13 +72,13 @@ const browser = ( browserPath: F<RouterPath>, routerPath?: F<RouterPath>, option
 
     path ( getBrowserPath () );
 
-  });
+  }, { sync: 'init' } );
 
   useEffect ( () => { // Update path from the router
 
     navigate ( getRouterPath () || untrack ( path ) );
 
-  });
+  }, { sync: 'init' } );
 
   if ( options.history ) {
 
