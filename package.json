@@ -22,14 +22,14 @@
     "isomorphic"
   ],
   "dependencies": {
-    "noren": "^0.4.3"
+    "noren": "^0.4.6"
   },
   "peerDependencies": {
     "voby": "*"
   },
   "devDependencies": {
-    "tsex": "^2.2.4",
-    "typescript": "^4.9.5",
+    "tsex": "^3.0.1",
+    "typescript": "^5.1.6",
     "voby": "*"
   }
 }
