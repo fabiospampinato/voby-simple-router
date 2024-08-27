@@ -27,7 +27,7 @@ const browser = ( browserPath: F<RouterPath>, routerPath?: F<RouterPath>, option
 
     if ( options.resetScroll ) {
 
-      globalThis.window?.scrollTo ( 0, 0 );
+      globalThis.window?.scrollTo?. ( 0, 0 );
 
     }
 
