@@ -6,9 +6,9 @@ import type {OR, RouterParams} from '~/types';
 
 /* MAIN */
 
-const useParams = (): OR<RouterParams> => {
+const useParams = <T extends RouterParams = RouterParams>(): OR<T> => {
 
-  return useState ().params;
+  return useState ().params as OR<T>;
 
 };
 
