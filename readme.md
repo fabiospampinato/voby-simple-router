@@ -283,7 +283,7 @@ const App = () => {
 
 #### `useRoute`
 
-This hooks gives you the currently matched route object, it's relatively low level, but powerful, because you can attach arbitrary data to a route and retriving it this way.
+This hooks gives you the currently matched route object, it's relatively low level, but powerful, because you can attach arbitrary data to a route and retrieving it this way.
 
 ```tsx
 import {useRoute} from 'voby-simple-router';
