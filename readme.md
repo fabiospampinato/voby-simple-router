@@ -20,7 +20,7 @@ npm install --save voby-simple-router
 | [`Navigate`](#navigate)   | [`useParams`](#useparams)             | [`RouterParams`](#routerparams)               |
 |                           | [`useRoute`](#useroute)               | [`RouterPath`](#routerpath)                   |
 |                           | [`useRouter`](#userouter)             | [`RouterRoute`](#routerroute)                 |
-|                           | [`useSearchParams`](#usesearchparams) | [`RouterRouter`](#routerrouter)               |
+|                           | [`useSearchParams`](#usesearchParams) | [`RouterRouter`](#routerrouter)               |
 
 ## Usage
 
@@ -128,12 +128,12 @@ const app = (
 
 #### `Route`
 
-This crucial component renders the actual route that the router selected. If you don't use it your route won'tbe rendered.
+This crucial component renders the actual route that the router selected. If you don't use it your route won't be rendered.
 
 ```tsx
 import {Route} from 'voby-simple-router';
 
-// Left's render our route in the middle of some arbitrary components
+// Let's render our route in the middle of some arbitrary components
 
 const app = (
   <Router routes={Routes}>
@@ -214,7 +214,7 @@ const App = () => {
   return (
     <Suspense fallback={<div>Still loading...</div>}>
       <p>Value: {value}</p>
-    </Suspsense>
+    </Suspense>
   );
 };
 ```
@@ -311,7 +311,7 @@ import {useSearchParams} from 'voby-simple-router';
 const App = () => {
   const searchParams = useSearchParams ();
   const value = () => Number ( searchParams ().get ( 'value' ) ) || 0;
-  const increment = () => searchparams ().set ( 'value', value () + 1 );
+  const increment = () => searchParams ().set ( 'value', value () + 1 );
   return <p onClick={increment}>Current value: {value}</p>;
 };
 ```
