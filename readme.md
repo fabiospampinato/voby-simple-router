@@ -20,7 +20,7 @@ npm install --save voby-simple-router
 | [`Navigate`](#navigate)   | [`useParams`](#useparams)             | [`RouterParams`](#routerparams)               |
 |                           | [`useRoute`](#useroute)               | [`RouterPath`](#routerpath)                   |
 |                           | [`useRouter`](#userouter)             | [`RouterRoute`](#routerroute)                 |
-|                           | [`useSearchParams`](#usesearchParams) | [`RouterRouter`](#routerrouter)               |
+|                           | [`useSearchParams`](#usesearchparams) | [`RouterRouter`](#routerrouter)               |
 
 ## Usage
 
